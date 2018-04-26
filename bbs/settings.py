@@ -131,9 +131,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 EMAIL_HOST = "smtp.126.com"   # 服务器
 EMAIL_PORT = 25               # 一般情况下都为25
-EMAIL_HOST_USER = "leowle@126.com"   # 账号
-EMAIL_HOST_PASSWORD = "wangle6318"  # 密码
+EMAIL_HOST_USER = "xxxx@126.com"   # 账号
+EMAIL_HOST_PASSWORD = "xxxxxx"  # 密码
 EMAIL_USE_TLS = False             # 一般都为False
-EMAIL_FROM = "leowle@126.com"        # 邮箱来自
+EMAIL_FROM = "xxxxxxx"        # 邮箱来自
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880 * 2   #传最大图片10M
