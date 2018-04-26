@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8" />
+	<title>师生互动社区</title>
+    <link rel="stylesheet" href="../../static/css/index.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css">
+</head>
+<body onload="changeCurLeftNav()">
+	<div class="header">
+		<div class="logo">
+            <a href="{% url 'article:index' %}"><img src="../../static/img/logo.png"/></a>
+			<span>许多东西都因不发问而丧失</span>
+		</div>
+		<div class="serarch-box">
+			<form class="serarch-form" role="search" action="search" method="post">{% csrf_token %}
+				<input class="" type="text" name="words" placeholder="站内搜索"/>
+				<button type="submit" value="search" class="search-btn" id="">
+					<span class="glyphicon glyphicon-search"></span>
+				</button>
+			</form>
+		</div>
+		<div class="user-state">
+            {% if user.is_authenticated %}
+             <ul class="logined">
+				<li><img src="../../static/img/head.jpg"/><a>{{ user.username }}</a></li>
+			</ul>
+            {% else %}
+            <ul class="not-login">
+				<li><a href="{% url 'article:user_login' %}">登陆</a></li>
+				<li><a href="{% url 'article:user_register' %}">注册</a></li>
+			</ul>
+            {% endif %}
+			<div class="set-view">
+				<div class="postings">
+					<ul>
+						<li><a href="{% url 'article:new_article' %}"><img src="../../static/img/comment.svg"/><p>发帖</p></a></li>
+						<li><a href="{% url 'article:myarticle' %}"><img src="../../static/img/text.svg"/><p>我的帖子</p></a></li>
+						<li><a href="{% url 'article:mycollect' %}"><img src="../../static/img/collect.svg"/><p>我的收藏</p></a></li>
+					</ul>
+				</div>
+				<div class="single-info">
+					<ul>
+						<li><a href="{% url 'article:myinfomation' %}">个人资料</a></li>
+						<li><a href="{% url 'article:user_logout' %}">退出登陆</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="bbs">
+		<div class="left-nav">
+			<ul>
+				<li class="cur-left-nav"><a href="{% url 'article:index' %}">社区首页</a></li>
+                {% for tag in tags %}
+                    <li><a href="{% url 'article:article_list' tag.id %}">{{ tag.name }}</a></li>
+                {% endfor %}
+			</ul>
+		</div>
+		<div class="content">
+            <div class="top-carousel">
+        <div class="photo-frame">
+            <div class="inner-frame">
+                <div class="carousel slide" id="content-carousel" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target = "#content-carousel" data-slide-to = "0" class="active"></li>
+                        <li data-target = "#content-carousel" data-slide-to = "1"></li>
+                        <li data-target = "#content-carousel" data-slide-to = "2"></li>
+                        <li data-target = "#content-carousel" data-slide-to = "3"></li>
+                    </ol>
+                    <div class="carousel-inner">
+                        <div class="item active">
+                            <a href="#">
+                                <img class="img-responsive" style="height: 340px;" src="{{ f1.carousel.url }}" alt="first slide"/>
+                            </a>
+                        </div>
+                        <div class="item">
+                            <a href="#">
+                                <img class="img-responsive" style="height: 340px;" src="{{ f2.carousel.url }}" alt="second slide"/>
+                            </a>
+                        </div>
+                        <div class="item">
+                            <a href="#">
+                                <img class="img-responsive" style="height: 340px" src="{{ f3.carousel.url }}" alt="third slide"/>
+                            </a>
+                        </div>
+                        <div class="item">
+                            <a href="#">
+                                <img class="img-responsive" style="height: 340px" src="{{ f4.carousel.url }}" alt="fourth slide"/>
+                            </a>
+                        </div>
+                    </div>
+                    <a class="carousel-control left" href="#content-carousel" data-slide = "prev">
+                        <span class = "glyphicon glyphicon-chevron-left"></span>
+                    </a>
+                    <a class="carousel-control right" href="#content-carousel" data-slide = "next">
+                        <span class = "glyphicon glyphicon-chevron-right"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+            <div class="new-content">
+        <div class="bcolumn">
+            <img src="../../static/img/new.svg"/>
+            <p>新帖榜</p>
+        </div>
+        <div class="new-ct">
+            <ul>
+                {% for new in newc %}
+                    <li>
+                        <div>
+                            <a href="{% url 'article:show_article' new.id %}">{{ new.title }}</a>
+                        </div>
+                        <span>{{ new.author }}</span>
+                        <span class="tags">{{ new.category }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        </div>
+            <div class="hot-content">
+        <div class="bcolumn">
+            <div class="bcolumn">
+            <img src="../../static/img/hot.svg"/>
+            <p>热帖榜</p>
+        </div>
+        </div>
+        <div class="hot-ct">
+            <ul>
+                {% for hot in hotc %}
+                    <li>
+                        <div>
+                            <a href="{% url 'article:show_article' hot.id %}">{{ hot.title }}</a>
+                        </div>
+                        <span>{{ hot.author }}</span>
+                        <span class="tags">{{ hot.category }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+		</div>
+
+	</div>
+	<div class="footer">
+		@ 2007 - 2018 师生互动社区
+	</div>
+
+
+{#    <script src="{% static '/js/jquery-3.1.0.min.js' %}" charset="UTF-8" type="text/javascript"></script>#}
+{#    <script src="{% static '/js/bootstrap.min.js' %}" charset="UTF-8" type="text/javascript"></script>#}
+{#    <script src="{% static '/js/index.js' %}" charset="UTF-8" type="text/javascript"></script>#}
+
+
+    <script src="../../static/js/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../static/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../static/js/index.js" type="text/javascript" charset="utf-8"></script>
+
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>邮箱登陆</title>
+	<link rel="stylesheet" type="text/css" href="../../static/css/reset.css"/>
+	<link rel="stylesheet" type="text/css" href="../../static/css/bootstrap.min.css"/>
+</head>
+<body>
+	<div class="mycontainer">
+		<div class="header">
+			<p><a href="#"><img src="../../static/img/logo.png"/></a>邮箱登陆</p>
+		</div>
+		<div class="email-form">
+			<form action="login" method="post">{% csrf_token %}
+				<ul>
+					<li>
+						<label for="{{ emaiLoForm.user_name.id_for_label }}">用户名:</label>
+						{{ emaiLoForm.user_name }}
+					</li>
+					<li class="code">
+						<label for="{{ emaiLoForm.code.id_for_label }}">验证码:</label>
+						{{ emaiLoForm.code }}
+						<a href="javascript:void (0);">获取验证码</a>
+					</li>
+					<li>
+						<input class="findpwd" type="submit" value="登陆"/>
+					</li>
+				</ul>
+			</form>
+		</div>
+        <div class="errct hide">{{ err }}</div>
+        <div class="errmsg">
+            <p>
+                <img src="../../static/img/warn.svg" alt="" />
+                <span></span>
+            </p>
+        </div>
+    </div>
+
+	<script src="../../static/js/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../static/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" charset="UTF-8">
+        $(function(){
+            $.ajaxSetup({
+                data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+            });
+
+            $(".code > a").on("click",postLoginEmail)
+            alertWarnInfo();
+
+            function postLoginEmail() {
+                var name = $("#loginuser").val();
+                var tempData = {
+                    'name':name,
+                };
+                $.ajax({
+                    url:'{% url 'article:login_post_email' %}',
+                    type:'POST',
+                    dataType:'json',
+                    data:tempData,
+                    success:function (data){
+                        console.log(data)
+                        if (data["status"] == '0') {
+                            $(".errmsg > p > span").text("用户名不存在");
+                            $(".errmsg").show().delay(500).fadeOut(2000);
+                        } else {
+                            $(".errmsg > p > span").text("验证码发送成功");
+                            $(".errmsg").show().delay(500).fadeOut(2000);
+                        }
+                    }
+                })
+                return false;
+            }
+
+            function alertWarnInfo() {
+                var warnNum = $(".errct").text();
+                if(warnNum.length != 0){
+                    if (warnNum == '1'){
+                        $(".errmsg > p > span").text("验证码有误");
+			            $(".errmsg").show().delay(500).fadeOut(2000);
+                    }
+                }
+            }
+
+        })
+
+    </script>
+
+</body>
+</html>

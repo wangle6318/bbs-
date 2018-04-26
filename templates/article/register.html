@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>登陆</title>
+	<link rel="stylesheet" type="text/css" href="../../static/css/register.css"/>
+	<link rel="stylesheet" type="text/css" href="../../static/css/bootstrap.min.css"/>
+</head>
+<body>
+	<div class="mycontainer">
+		<div class="header">
+			<p><img src="../../static/img/logo.png"/></p>
+		</div>
+		<div class="content">
+			<div class="login-nav">
+				<ul>
+					<li class="cur-nav">注册</li>
+					<li>登陆</li>
+				</ul>
+			</div>
+			<div class="login-form">
+				<div class="form-wraper" style="display: block;" id="signin">
+					<form action="register" method="post">{% csrf_token %}
+						<ul>
+							<li>
+								<label for="{{ regForm.username.id_for_label }}">用户名</label>
+                                {{ regForm.username }}{{ regForm.username.errors }}
+							</li>
+							<li>
+								<label for="{{ regForm.password.id_for_label }}">密码</label>
+                                {{ regForm.password }}
+							</li>
+							<li>
+								<label for="{{ regForm.email.id_for_label }}">邮箱</label>
+                                {{ regForm.email }}
+							</li>
+							<li class="code">
+								<label for="{{ codeForm.iden_code.id_for_label }}">验证码</label>
+                                {{ codeForm.iden_code }}
+                                <a href="javascript:void (0);">获取邮箱验证码</a>
+							</li>
+
+							<li>
+								<input id="register-btn" type="submit" value="立即注册"/>
+							</li>
+						</ul>
+					</form>
+				</div>
+				<div class="form-wraper" style="display: none;" id="signup">
+					<form action="login" method="post">{% csrf_token %}
+						<ul>
+							<li>
+								<label for="{{ form.user_name.id_for_label }}">用户名</label>
+                                {{ form.user_name }}
+							</li>
+							<li>
+								<label for="{{ form.password.id_for_label }}">密码</label>
+                                {{ form.password }}
+							</li>
+							<li class="forget"><a href="{% url 'article:email_login' %}">忘记密码</a></li>
+							<li>
+								<input id="register-btn" type="submit" value="登陆"/>
+							</li>
+						</ul>
+					</form>
+				</div>
+				<div class="errct hidden">{{ err }}</div>
+				<div class="errmsg">
+					<p>
+						<img src="../../static/img/warn.svg" alt="" />
+						<span></span>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="../../static/js/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../static/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../static/js/register.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" charset="utf-8">
+    $(function(){
+        $.ajaxSetup({
+            data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+        });
+
+        $(".code > a").on("click",postEmail)
+
+        function postEmail() {
+            var name = $("#userName").val();
+            var email = $("#email").val();
+            var tempData = {
+                'name':name,
+                'email':email,
+            };
+            $.ajax({
+                url:'{% url 'article:post_email' %}',
+                type:'POST',
+                dataType:'json',
+                data:tempData,
+                success:function (data){
+                    console.log(data)
+                    if (data["status"] == '0') {
+                        $(".errmsg > p > span").text("验证码发送失败");
+			            $(".errmsg").show().delay(500).fadeOut(2000);
+                    } else {
+                        $(".errmsg > p > span").text("验证码发送成功");
+			            $(".errmsg").show().delay(500).fadeOut(2000);
+                    }
+                }
+            })
+        }
+    })
+
+    </script>
+
+</body>
+</html>

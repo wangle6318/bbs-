@@ -1,0 +1,174 @@
+body {
+    background: url(../img/new_body_65af291.jpg) no-repeat scroll top center;
+}
+
+body, button, input, select, textarea {
+    font: 12px/20px "微软雅黑",Arial;
+}
+
+li{
+	list-style: none;
+}
+
+.mycontainer{
+	width: 800px;
+	height: auto;
+	margin: 50px auto;
+}
+
+.header{
+	height:50px;
+	width: auto;
+	text-align: center;
+	border-bottom: 2px solid snow;
+}
+
+.header > p{
+	height:50px;
+	line-height:50px;
+	font-size: 25px;
+	font-family: "仿宋";
+}
+
+.header > p >img{
+	vertical-align:middle
+}
+
+.content{
+	margin-top: 20px;
+	float: left;
+}
+
+.login-nav ul{
+	position: relative;
+	left: 300px;
+}
+
+.login-nav li{
+	display: block;
+	padding: 0px 10px 3px 10px;
+	float: left;
+	margin-right:30px;
+	font-size: 18px;
+	cursor: pointer;
+}
+
+.cur-nav{
+	color: #2965b1;
+	border-bottom: 3px solid #309BEB;
+}
+
+
+.login-form{
+	margin-top: 20px;
+	float: left;
+}
+
+.form-wraper ul{
+	position: relative;
+	left: 170px;
+}
+
+.form-wraper ul > li{
+	font-size: 18px;
+    color: #333;
+    line-height: 36px;
+    height: 36px;
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.form-wraper ul > li > label{
+	font-weight: normal;
+}
+
+.form-wraper ul > li > label::after{
+	content: ":";
+}
+
+.form-wraper ul > li >input{
+	width: 280px;
+	border-radius: 5px;
+	outline: none;
+	border: 1px solid darkgrey;
+}
+
+.form-wraper ul > .code >input{
+	height: 38px;
+	width: 141px;
+	border-radius: 5px 0 0 5px;
+	outline: none;
+	border: 1px solid darkgrey;
+	margin: 0px;
+}
+
+.form-wraper ul > .code >a{
+	text-align: center;
+	display: inline-block;
+	height: 38px;
+	position: relative;
+	top: -2px;
+	margin-left: -6px;
+	width: 140px;
+	border-radius:0 5px 5px 0;
+	font-size: 14px;
+	color: white;
+	border: none;
+	background-color: #91C135;
+	text-decoration: none;
+}
+
+.form-wraper ul > .forget{
+	position: relative;
+	right: 30px;
+	font-size: 14px;
+    line-height: 18px;
+    height: 18px;
+    text-align: right;
+}
+
+.form-wraper ul > li > .warn-info {
+	position: relative;
+	left: 70px;
+	top: -3px;
+	font-size: 12px;
+    color: #333;
+    line-height: 18px;
+    height: 18px;
+    text-align: left;
+}
+
+#register-btn{
+	width: 280px;
+	border-radius: 5px;
+	outline: none;
+	border: none;
+	background-color: #4ba0d7;
+	color: white;
+}
+
+
+.errmsg{
+	display: none;
+	position: absolute;
+	top: 250px;
+	left: 620px;
+	width: 200px;
+	height: 60px;
+	background-color: #5c5c5c;
+	border-radius: 5px;
+}
+
+.errmsg > p{
+	text-align: center;
+	height: 60px;
+	width: 146px;
+	line-height: 60px;
+	color: white;
+	font-weight: bold;
+}
+
+.errmsg > p >img{
+	position: relative;
+	height: 30px;
+}

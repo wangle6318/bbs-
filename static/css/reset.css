@@ -1,0 +1,135 @@
+body {
+    background: url(../img/new_body_65af291.jpg) no-repeat scroll top center;
+}
+
+body, button, input, select, textarea {
+    font: 12px/20px "微软雅黑",Arial;
+}
+
+li{
+	list-style: none;
+}
+
+.mycontainer{
+	border-top: 8px solid #4ba0d7;
+	width: 800px;
+	height: 500px;
+	margin: 50px auto;
+	background-color: white;
+	box-shadow: 1px 1px 1px 1px darkgrey;
+}
+
+.header{
+	position: relative;
+	height:50px;
+	width: 800px;
+	text-align: center;
+	border-bottom: 2px solid snow;
+	background-color: #f3f3f3;
+}
+
+.header > p{
+	color: #4ba0d7;
+	height:50px;
+	line-height:50px;
+	font-size: 25px;
+	font-family: "仿宋";
+}
+
+.header > p img{
+	vertical-align:middle
+}
+
+.email-form ul{
+	margin-top: 40px;
+	position: relative;
+	text-align: right;
+	left: -280px;
+}
+
+.email-form ul > li{
+	font-size: 18px;
+    color: #333;
+    line-height: 30px;
+    height: 30px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.email-form ul > li >input{
+	width: 280px;
+	border-radius: 5px;
+	outline: none;
+	border: 1px solid darkgrey;
+}
+
+.email-form ul > .code >input{
+	height: 32px;
+	width: 141px;
+	border-radius: 5px 0 0 5px;
+	outline: none;
+	border: 1px solid darkgrey;
+	margin: 0px;
+}
+
+.email-form ul > .code > a{
+	position: relative;
+	display: inline-block;
+	top: -2px;
+	margin-left: -6px;
+	width: 140px;
+	height: 32px;
+	border-radius:0 5px 5px 0;
+	font-size: 14px;
+	text-decoration: none;
+	text-align: center;
+	color: white;
+	border: none;
+	background-color: #91C135;
+}
+
+.findpwd{
+	width: 280px;
+	border-radius: 5px;
+	outline: none;
+	border: none;
+	background-color: #4ba0d7;
+	color: white;
+}
+
+.warn-info{
+	position: relative;
+	top: -3px;
+	left: 485px;
+	font-size: 12px;
+    color: #333;
+    line-height: 18px;
+    height: 18px;
+    text-align: left;
+}
+
+
+.errmsg{
+	display: none;
+	position: absolute;
+	top: 180px;
+	left: 590px;
+	width: 150px;
+	height: 60px;
+	background-color: #5c5c5c;
+	border-radius: 5px;
+}
+
+.errmsg > p{
+	text-align: center;
+	height: 60px;
+	width: 146px;
+	line-height: 60px;
+	color: white;
+	font-weight: bold;
+}
+
+.errmsg > p >img{
+	position: relative;
+	height: 30px;
+}

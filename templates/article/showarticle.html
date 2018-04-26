@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>师生互动社区</title>
+	<link rel="stylesheet" type="text/css" href="../../static/css/index.css"/>
+	<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="../../static/css/bootstrap.min.css"/>
+</head>
+<body>
+	<div class="header">
+		<div class="logo">
+            <a href="{% url 'article:index' %}"><img src="../../static/img/logo.png"/></a>
+			<span>许多东西都因不发问而丧失</span>
+		</div>
+		<div class="serarch-box">
+			<form class="serarch-form" role="search" action="search" method="post">{% csrf_token %}
+				<input class="" type="text" name="words" placeholder="站内搜索"/>
+				<button type="submit" value="search" class="search-btn" id="">
+					<span class="glyphicon glyphicon-search"></span>
+				</button>
+			</form>
+		</div>
+		<div class="user-state">
+            {% if user.is_authenticated %}
+             <ul class="logined">
+				<li><img src="../../static/img/head.jpg"/><a>{{ user.username }}</a></li>
+			</ul>
+            {% else %}
+            <ul class="not-login">
+				<li><a href="{% url 'article:user_login' %}">登陆</a></li>
+				<li><a href="{% url 'article:user_register' %}">注册</a></li>
+			</ul>
+            {% endif %}
+			<div class="set-view">
+				<div class="postings">
+					<ul>
+						<li><a href="{% url 'article:new_article' %}"><img src="../../static/img/comment.svg"/><p>发帖</p></a></li>
+						<li><a href="{% url 'article:myarticle' %}"><img src="../../static/img/text.svg"/><p>我的帖子</p></a></li>
+						<li><a href="{% url 'article:mycollect' %}"><img src="../../static/img/collect.svg"/><p>我的收藏</p></a></li>
+					</ul>
+				</div>
+				<div class="single-info">
+					<ul>
+						<li><a href="{% url 'article:myinfomation' %}">个人资料</a></li>
+						<li><a href="{% url 'article:user_logout' %}">退出登陆</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="bbs">
+		<div class="abs">
+			<div class="abs-top">
+				<p class="crumbs">
+					<a href="{% url 'article:index' %}">师生交流社区</a>&nbsp;&gt;&nbsp;
+					<a href="{% url 'article:article_list' art.category_id %}">{{ art.category }}</a>
+				</p>
+			</div>
+			<div class="abs-title" data="{{ art.id }}">
+				<p>{{ art.title }}</p>
+			</div>
+			<div class="abs-extra">
+				<ul>
+					<li><span class="glyphicon glyphicon-user"><span>{{ art.author }}</span></span></li>
+					<li><span class="glyphicon glyphicon-time"><span>{{ art.created_time|date:"Y-m-d" }}</span></span></li>
+					<li><span class="glyphicon glyphicon-eye-open"><span>{{ art.views }}次浏览</span></span></li>
+					<li><span class="glyphicon glyphicon-tags"><span>{{ art.comments }}条评论</span></span></li>
+				</ul>
+			</div>
+			<div class="abs-ct">
+                {% autoescape off %}
+                    {{ art.body }}
+                {% endautoescape %}
+			</div>
+            {% if art.attachment %}
+                <div class="file-upload">
+                    <img src="../../static/img/file.svg" alt="">
+                    <span>{{ filename }}</span>
+                    <span><a href="{% url 'article:download' art.id %}">下载</a></span>
+                    {% if ft %}
+                        <span class="prevpdf"><a href="{{ art.attachment.url }}" target="pdfContainer" >预览</a></span>
+                    {% endif %}
+                </div>
+                <div id="pop" class="pop" style="display: none;">
+                    <iframe src="" frameborder="0" id="pdfContainer" name="pdfContainer"></iframe>
+                </div>
+            {% endif %}
+
+			<div class="abs-com">
+				<div class="com-menu">
+					<ul>
+                        {% if user.is_authenticated %}
+                            <li>
+                                <button>评论</button>
+                                <a class="collect" href="javacrript:void(0);">
+                                    {% if is_collected %}
+                                        <span style="color: hotpink" class="glyphicon glyphicon-heart"></span>
+                                    {% else %}
+                                        <span style="color: #6699cc" class="glyphicon glyphicon-heart"></span>
+                                    {% endif %}
+                                </a>
+                            </li>
+                        {% else %}
+						    <li>登录后可以评论收藏哦,赶快<a href="{% url 'article:user_login' %}">登陆</a>吧</li>
+					    {% endif %}
+                    </ul>
+				</div>
+				<div class="com-input">
+					<form action="" method="post">{% csrf_token %}
+						<textarea name="" placeholder="请写点什么吧……"></textarea><br />
+						<input class="postcom" type="submit" value="发表评论"/>
+					</form>
+				</div>
+				<div class="abs-show-com">
+					<div class="com-info-top">
+						<div class="com-info-left">
+							评论
+						</div>
+						<div class="com-info-right">
+						</div>
+						<div class="com-info">
+							<ul>
+                                {% if comments %}
+                                    {% for com in comments %}
+                                        <li class="comments" data="{{ com.id }}">
+                                            <div class="com-auth">
+                                                <p>
+                                                    <span data="{{ com.author_id }}">{{ com.author }}</span>
+                                                </p>
+                                            </div>
+                                            <div class="com-info-ct" data-actions-icnt="">
+                                                {{ com.content }}
+                                                {% for rep in reply %}
+                                                    {% ifequal com.id rep.comment_id %}
+                                                        <div class="reply">
+                                                            <div class="reply-auth">
+                                                                <p>
+                                                                    <span data="{{ rep.author_id_id }}">{{ rep.author_id }}</span>
+                                                                    <span class="rek">回复</span>
+                                                                    <span class="rrauth">{{ rep.author_to }}</span>
+                                                                </p>
+                                                            </div>
+                                                            <div class="reply-info">
+                                                                {{ rep.content }}
+                                                            </div>
+                                                            {% if user.is_authenticated %}
+                                                                <a class="btn-reply" href="javascript:void(0);">回复</a>
+                                                                <div class="com-input" style="display: none">
+                                                                    <form action="" method="post">{% csrf_token %}
+                                                                        <textarea name="" placeholder="请写点什么吧……"></textarea><br />
+                                                                        <input class="postreply r1" type="submit" value="发表回复"/>
+                                                                    </form>
+                                                                </div>
+                                                            {% endif %}
+                                                        </div>
+                                                    {% endifequal %}
+                                                {% endfor %}
+                                            </div>
+                                            {% if user.is_authenticated %}
+                                                <a class="btn-reply" href="javascript:void(0);">回复</a>
+                                                <div class="com-input" style="display: none">
+                                                    <form action="" method="post">{% csrf_token %}
+                                                        <textarea name="" placeholder="请写点什么吧……"></textarea><br />
+                                                        <input class="postreply r2" type="submit" value="发表回复"/>
+                                                    </form>
+                                                </div>
+                                            {% endif %}
+                                        </li>
+                                    {% endfor %}
+                                {% endif %}
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="footer">
+		@ 2007 - 2018 师生互动社区
+	</div>
+
+	<script src="../../static/js/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://cdn.bootcss.com/pdf.js/2.0.480/pdf.min.js"></script>
+	<script src="../../static/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="https://unpkg.com/wangeditor@3.1.0/release/wangEditor.min.js"></script>
+	<script src="../../static/js/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../static/js/editor.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" charset="UTF-8">
+    $(function(){
+        $.ajaxSetup({
+            data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+        });
+
+        $(".com-menu > ul > li > .collect").on("click",collected)
+        $(".postcom").on("click",comment)
+        $(".postreply").on("click",reply)
+
+        function collected() {
+            var article = $(".abs-title").attr("data")
+            var postdata = {
+                'article':article
+            }
+            console.log(postdata)
+            $.ajax({
+                url:'{% url 'article:collected' %}',
+                type:'POST',
+                dataType:'json',
+                data:postdata,
+                success:function (data) {
+                    if(data['status'] =='0'){
+                        $(".com-menu > ul > li > a > span").css({
+                            "color":"#69c"
+                        })
+                    }else if(data['status']=='1'){
+                        $(".com-menu > ul > li > a > span").css({
+                            "color":"hotpink"
+                        })
+                    }
+                }
+            })
+            return false
+        }
+        
+        function comment(e) {
+            e= e || window.e
+            e.preventDefault()
+            var art_id = $(".abs-title").attr("data")
+            var content = $(this).siblings("textarea").val()
+            if(content.length == 0){
+                alert("回复不能为空")
+                return false
+            }
+            var postdata = {
+                'article':art_id,
+                'content':content
+            }
+            $.ajax({
+                url:'{% url 'article:submitcomment' %}',
+                type:'POST',
+                dataType:'json',
+                data:postdata,
+                success:function (data) {
+                    window.location.reload()
+                }
+            })
+        }
+
+        function reply(e) {
+            e= e || window.e
+            e.preventDefault()
+            var art_id = $(".abs-title").attr("data")
+            var content = $(this).siblings("textarea").val()
+            var com_id = $(this).parents().filter(".comments").attr("data")
+            if($(this).hasClass("r2")){
+                var author_to = $(this).parentsUntil(".comments").filter(".com-input").siblings(".com-auth").find("p > span").attr("data")
+            }else {
+                var author_to = $(this).parentsUntil(".reply").siblings(".reply-auth").find("p > span:first").attr("data")
+            }
+            if(content.length == 0){
+                alert("回复不能为空")
+                return false
+            }
+            var postdata = {
+                'article':art_id,
+                'content':content,
+                'comment':com_id,
+                'author_to':author_to
+            }
+            $.ajax({
+                url:'{% url 'article:submitreply' %}',
+                type:'POST',
+                dataType:'json',
+                data:postdata,
+                success:function (data) {
+                    if(data['status'] == '0'){
+                        alert("不能回复自己")
+                        window.location.reload()
+                    }else {
+                        window.location.reload()
+                    }
+                }
+            })
+        }
+
+
+    })
+    </script>
+</body>
+</html>
